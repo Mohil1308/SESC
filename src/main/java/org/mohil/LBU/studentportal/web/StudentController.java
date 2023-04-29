@@ -3,6 +3,8 @@ package org.mohil.LBU.studentportal.web;
 import java.security.Principal;
 
 import org.mohil.LBU.studentportal.model.User;
+import org.mohil.LBU.studentportal.service.CoursesService;
+import org.mohil.LBU.studentportal.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class StudentController {
 
-	private org.mohil.LBU.studentportal.service.UserService userService;
+	private UserService userService;
+	private CoursesService coursesService;
 
-	public StudentController(org.mohil.LBU.studentportal.service.UserService userService) {
+	public StudentController(org.mohil.LBU.studentportal.service.UserService userService, CoursesService coursesService) {
 		super();
 		this.userService = userService;
+		this.coursesService = coursesService;
 	}
 	
 	@GetMapping("/students/profile")
@@ -45,6 +49,12 @@ public class StudentController {
 		// save updated student object
 		userService.updateStudent(existingStudent);
 		return "redirect:/students/profile";		
+	}
+	
+	@GetMapping("/students/courses")
+	public String listStudents(Model model) {
+		model.addAttribute("courses", coursesService.getCourses());
+		return "courses";
 	}
 	
 }
