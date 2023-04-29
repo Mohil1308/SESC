@@ -99,4 +99,14 @@ public class User {
 		this.roles = roles;
 	}
 
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+	
+	
+
 }
