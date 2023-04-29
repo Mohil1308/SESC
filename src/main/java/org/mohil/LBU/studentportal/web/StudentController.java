@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.mohil.LBU.studentportal.model.User;
 import org.mohil.LBU.studentportal.service.CoursesService;
+import org.mohil.LBU.studentportal.service.EnrollmentService;
 import org.mohil.LBU.studentportal.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,13 @@ public class StudentController {
 
 	private UserService userService;
 	private CoursesService coursesService;
+	private EnrollmentService enrollmentService;
 
-	public StudentController(org.mohil.LBU.studentportal.service.UserService userService, CoursesService coursesService) {
+	public StudentController(org.mohil.LBU.studentportal.service.UserService userService, CoursesService coursesService, EnrollmentService enrollmentService) {
 		super();
 		this.userService = userService;
 		this.coursesService = coursesService;
+		this.enrollmentService = enrollmentService;
 	}
 	
 	@GetMapping("/students/profile")
@@ -56,5 +59,19 @@ public class StudentController {
 		model.addAttribute("courses", coursesService.getCourses());
 		return "courses";
 	}
+	
+	@GetMapping("/students/enrollments")
+	public String listEnrollments(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user, Model model) {
+		model.addAttribute("enrollments", enrollmentService.getEnrollment(user.getUsername()));
+		return "enrollments";
+	}
+	
+	@GetMapping("/students/enrollments/{courseId}")
+	public String listEnrollments(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user, @PathVariable String courseId) {
+		enrollmentService.saveEnrollment(user.getUsername(), courseId);
+		return "redirect:/students/enrollments";
+	}
+	
+	
 	
 }

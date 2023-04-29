@@ -47,6 +47,7 @@
 					<th> Course Id</th>
 					<th> Course Name</th>
 					<th> Course Fee </th>
+					<th> Action </th>
 				</tr>
 			</thead>
 			
@@ -55,6 +56,9 @@
 					<td th:text = "${course.courseId}"></td>
 					<td th:text = "${course.courseName}"></td>
 					<td th:text = "${course.courseFee}"></td>
+					
+					<td><a class="btn btn-primary" th:href="@{/students/enrollments/{courseId}(courseId=${course.courseId})}" id="amount_link">DO</a>
+					</td>
 				</tr>
 			</tbody>
 		
